@@ -1,0 +1,18 @@
+# Secrets : ne jamais publier ta clé API
+backend/.env
+.env
+
+# Environnement Python
+venv/
+.venv/
+__pycache__/
+*.pyc
+
+# Données locales générées automatiquement
+backend/quiz.db
+uploads/*
+!uploads/.gitkeep
+
+# Système
+.DS_Store
+Thumbs.db

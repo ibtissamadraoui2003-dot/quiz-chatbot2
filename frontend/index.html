@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Study — assistant de révision</title>
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="app" id="app">
+
+  <!-- ============================== BARRE LATERALE ============================== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 28 28" fill="none"><path d="M5 6.5C5 5.12 6.12 4 7.5 4H21a1 1 0 0 1 1 1v17a1 1 0 0 1-1 1H7.5A2.5 2.5 0 0 1 5 20.5v-14Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M5 20.5C5 19.12 6.12 18 7.5 18H22" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.5 8.5h8M9.5 11.5h5.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </span>
+      <div class="brand-text">
+        <p class="brand-name">Study</p>
+        <p class="brand-tagline">ton assistant de révision</p>
+      </div>
+      <button class="icon-btn sidebar-close" id="sidebarClose" aria-label="Fermer le menu" type="button">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+
+    <div class="upload-actions">
+      <button class="upload-btn upload-btn--cours" id="btnAddCours" type="button">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        Ajouter un cours
+      </button>
+      <button class="upload-btn upload-btn--examen" id="btnAddExamen" type="button">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        Ajouter un examen passé
+      </button>
+    </div>
+    <input type="file" id="fileInputCours" accept="application/pdf" hidden>
+    <input type="file" id="fileInputExamen" accept="application/pdf" hidden>
+
+    <div class="doc-section">
+      <p class="doc-section-title">Mes cours</p>
+      <div class="doc-list" id="listCours">
+        <p class="doc-empty">Aucun cours pour l'instant.</p>
+      </div>
+    </div>
+
+    <div class="doc-section">
+      <p class="doc-section-title">Examens passés</p>
+      <div class="doc-list" id="listExamens">
+        <p class="doc-empty">Aucun examen pour l'instant.</p>
+      </div>
+    </div>
+
+    <div class="progress-panel" id="progressPanel">
+      <p class="doc-section-title">Progression</p>
+      <div class="progress-body" id="progressBody">
+        <p class="doc-empty">Fais un quiz pour voir ta progression apparaître ici.</p>
+      </div>
+    </div>
+
+    <div class="sidebar-footer">
+      <span class="ai-status" id="aiStatus">
+        <span class="ai-status-dot" id="aiStatusDot"></span>
+        <span id="aiStatusText">Vérification de l'IA…</span>
+      </span>
+    </div>
+  </aside>
+
+  <div class="sidebar-scrim" id="sidebarScrim"></div>
+
+  <!-- ============================== ZONE DE CHAT ============================== -->
+  <main class="chat-panel">
+    <header class="chat-header">
+      <button class="icon-btn sidebar-open" id="sidebarOpen" aria-label="Ouvrir le menu" type="button">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </button>
+      <div class="chat-header-text">
+        <p class="chat-header-title">Ta session de révision</p>
+        <p class="chat-header-sub" id="chatHeaderSub">Envoie un cours pour commencer</p>
+      </div>
+      <button class="icon-btn" id="btnReset" aria-label="Recommencer la conversation" title="Recommencer la conversation" type="button">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M4 12a8 8 0 1 1 2.6 5.9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M4 17v-5h5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </header>
+
+    <div class="chat-thread" id="chatThread" aria-live="polite">
+      <div class="empty-state" id="emptyState">
+        <span class="empty-mark" aria-hidden="true">
+          <svg viewBox="0 0 28 28" fill="none"><path d="M5 6.5C5 5.12 6.12 4 7.5 4H21a1 1 0 0 1 1 1v17a1 1 0 0 1-1 1H7.5A2.5 2.5 0 0 1 5 20.5v-14Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M5 20.5C5 19.12 6.12 18 7.5 18H22" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.5 8.5h8M9.5 11.5h5.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+        </span>
+        <h1>Envoie ton premier cours en PDF</h1>
+        <p>Je le résume, j'en tire les points essentiels, et je peux ensuite t'interroger dessus. Ajoute aussi tes examens passés : je m'en souviens pour préparer des quiz dans le même esprit.</p>
+      </div>
+    </div>
+
+    <div class="composer">
+      <div class="suggestion-chips" id="suggestionChips">
+        <button class="chip" data-suggestion="Fais-moi un quiz">Fais-moi un quiz</button>
+        <button class="chip" data-suggestion="Résume mon dernier cours">Résume mon dernier cours</button>
+        <button class="chip" data-suggestion="Quels sont mes points faibles ?">Mes points faibles</button>
+      </div>
+      <div class="composer-row">
+        <div class="attach-wrap">
+          <button class="icon-btn attach-btn" id="attachBtn" aria-label="Ajouter un document" type="button">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </button>
+          <div class="attach-menu" id="attachMenu">
+            <button type="button" data-target="cours">Un cours</button>
+            <button type="button" data-target="examen">Un examen passé</button>
+          </div>
+        </div>
+        <textarea class="composer-input" id="composerInput" rows="1" placeholder="Écris ta question, ou demande un quiz…"></textarea>
+        <button class="send-btn" id="sendBtn" aria-label="Envoyer" type="button">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M4 12h16M13 5l7 7-7 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ============================== MODALE D'ENVOI PDF ============================== -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <h2 id="modalTitle">Nouveau cours</h2>
+    <p class="modal-file" id="modalFileName"></p>
+
+    <label class="modal-label" for="modalTitleInput">Titre</label>
+    <input type="text" id="modalTitleInput" class="modal-input" placeholder="Ex. Les suites numériques">
+
+    <label class="modal-label" for="modalSubjectSelect">Matière</label>
+    <select id="modalSubjectSelect" class="modal-input">
+      <option value="Mathématiques">Mathématiques</option>
+      <option value="Physique-Chimie">Physique-Chimie</option>
+      <option value="SVT">SVT</option>
+      <option value="Informatique">Informatique</option>
+      <option value="Histoire-Géographie">Histoire-Géographie</option>
+      <option value="Français">Français</option>
+      <option value="Anglais">Anglais</option>
+      <option value="Philosophie">Philosophie</option>
+      <option value="Économie">Économie</option>
+      <option value="Autre">Autre…</option>
+    </select>
+    <input type="text" id="modalSubjectOther" class="modal-input" placeholder="Précise la matière" hidden>
+
+    <div class="modal-actions">
+      <button type="button" class="modal-btn modal-btn--ghost" id="modalCancel">Annuler</button>
+      <button type="button" class="modal-btn modal-btn--primary" id="modalConfirm">Ajouter</button>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

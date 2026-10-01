@@ -1,0 +1,9 @@
+flask>=3.0
+python-dotenv>=1.0
+pypdf>=4.0
+
+# Fournisseur d'IA : installe celui dont tu as la clé (ou les deux, c'est sans risque).
+# Attention : l'ancien paquet « google-generativeai » n'est plus maintenu depuis
+# novembre 2025. Le paquet actuel de Google s'appelle « google-genai ».
+google-genai>=1.0
+openai>=1.60
