@@ -141,4 +141,4 @@ L'idée générale : chaque fichier a **un seul rôle**. `app.py` ne fait que re
 
 ## Licence
 
-Ce projet est sous licence [MIT](LICENSE) : libre à toi de le réutiliser, le modifier et le partager. Pense à remplacer `[Ton nom]` dans le fichier `LICENSE` par le tien avant de publier.
+Ce projet est sous licence [MIT](LICENSE) : libre à toi de le réutiliser, le modifier et le partager. Pense à remplacer `[ibtissam draoui]` dans le fichier `LICENSE` par le tien avant de publier.
